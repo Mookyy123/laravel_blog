@@ -1,32 +1,15 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Book List</title>
-    <style>
-        body { font-family: Arial, sans-serif; margin: 20px; }
-        table { border-collapse: collapse; width: 100%; }
-        th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
-        th { background-color: #f0f0f0; }
-    </style>
-</head>
-<body>
+<h1>Books List</h1>
 
-<h1>Available Books</h1>
+{{-- @dd($books) --}} {{-- Commented out so page renders --}}
 
-<table>
-    <tr>
-        <th>Title</th>
-        <th>Author</th>
-        <th>Price ($)</th>
-    </tr>
-    @foreach ($books as $book)
-    <tr>
-        <td>{{ $book['title'] }}</td>
-        <td>{{ $book['author'] }}</td>
-        <td>{{ $book['price'] }}</td>
-    </tr>
-    @endforeach
-</table>
+@foreach($books as $book)
+    <p>{{ $book->title }} - {{ $book->author }} - {{ $book->pages }} pages</p>
+    <a href="/books/{{ $book->id }}/edit">Edit</a>
+    <form action="/books/{{ $book->id }}" method="POST" style="display:inline">
+        @csrf
+        @method('DELETE')
+        <button type="submit">Delete</button>
+    </form>
+@endforeach
 
-</body>
-</html>
+<a href="/books/create">Add New Book</a>

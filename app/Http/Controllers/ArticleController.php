@@ -2,24 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Models\Article;
 
 class ArticleController extends Controller
 {
     public function index()
     {
-        $data = [
-            [ "id" => 1, "title" => "First Article" ],
-            [ "id" => 2, "title" => "Second Article" ],
-        ];
+        $articles = Article::all();
 
-        return view('articles.index', [
-            'articles' => $data
-        ]);
-    }
+        dd($articles);  // Debug here
 
-    public function detail($id)
-    {
-        return "Controller - Article Detail - $id";
+        return view('articles.index', compact('articles'));
     }
 }
+
