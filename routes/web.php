@@ -2,11 +2,26 @@
 
 use Illuminate\Support\Facades\Route;
 // use App\Http\Controllers\ArticleController;
+// use App\Http\Controllers\ProfileController;
+// use App\Http\Controllers\TestController;
 use App\Http\Controllers\UserController;
-use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\PostController;
+use App\Http\Controllers\LikeController;
 
-Route::get('/user-profile', [UserController::class, 'index']);
-Route::get('/profile-user', [ProfileController::class, 'index']);
+Route::get('/user/{id}/posts', [UserController::class, 'showPosts']); // One-to-Many
+Route::get('/post/{id}/user', [PostController::class, 'postedUser']); // BelongsTo
+Route::get('/user/{id}/likes', [LikeController::class, 'showLikedPosts']); // Many-to-Many
+Route::get('/post/{id}/likers', [LikeController::class, 'showPostLikers']); // Many-to-Many inverse
+Route::get('/user/{id}/latest-comment', [UserController::class, 'showLatestComment']); // HasOneThrough
+Route::get('/user/{id}/comments', [UserController::class, 'showUserComments']); // HasManyThrough
+
+
+
+
+
+
+// Route::get('/user-profile', [UserController::class, 'index']);
+// Route::get('/profile-user', [ProfileController::class, 'index']);
 
 // use App\Http\Controllers\Book\BookController;
 

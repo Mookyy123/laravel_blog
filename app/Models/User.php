@@ -2,57 +2,44 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\Model;
 
-class User extends Authenticatable
+class User extends Model
 {
-    /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable;
+    use HasFactory;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var list<string>
-     */
-    protected $fillable = [
-        'name',
-        'email',
-        'password',
-    ];
-
-    // One-to-One: User → Profile
-    public function profile()
-    {
-        return $this->hasOne(Profile::class);
+    // One to Many: User -> Posts
+    public function posts() {
+        return $this->hasMany(Post::class);
     }
 
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var list<string>
-     */
-    protected $hidden = [
-        'password',
-        'remember_token',
-    ];
+    // Many to Many: User -> Liked Posts
+    public function likedPosts() {
+        return $this->belongsToMany(Post::class, 'post_user_likes')->withTimestamps();
+    }
 
-    /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
-     */
-    protected function casts(): array
-    {
-        return [
-            'email_verified_at' => 'datetime',
-            'password' => 'hashed',
-        ];
+    // Has One Through: Latest Comment through Post
+    public function latestCommentThroughPost() {
+        return $this->hasOneThrough(
+            Comment::class,
+            Post::class,
+            'user_id', // FK on posts
+            'post_id', // FK on comments
+            'id',      // PK on users
+            'id'       // PK on posts
+        )->latestOfMany();
+    }
+
+    // Has Many Through: All Comments through Posts
+    public function commentsThroughPosts() {
+        return $this->hasManyThrough(
+            Comment::class,
+            Post::class,
+            'user_id',
+            'post_id',
+            'id',
+            'id'
+        );
     }
 }
-
-
-
-
