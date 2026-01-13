@@ -27,9 +27,6 @@ Route::get('/test', function () {
     return '✅ Admin can see this even in maintenance';
 })->middleware('maintenance');
 
-Route::get('/weekend-promo', function () {
-    return 'Welcome! You can access this only on weekends.';
-})->middleware('weekend.access');
-
+    
 
 require __DIR__.'/auth.php';
