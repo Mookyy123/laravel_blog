@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ArticleController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -11,7 +12,11 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
+Route::get('/articles/create', [ArticleController::class, 'create'])
+    ->name('articles.create');
 
+Route::post('/articles', [ArticleController::class, 'store'])
+    ->name('articles.store');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -24,9 +29,9 @@ Route::get('/admin', function () {
 })->middleware('check.email');
 
 Route::get('/test', function () {
-    return '✅ Admin can see this even in maintenance';
+    return ' Admin can see this even in maintenance';
 })->middleware('maintenance');
 
-    
+
 
 require __DIR__.'/auth.php';

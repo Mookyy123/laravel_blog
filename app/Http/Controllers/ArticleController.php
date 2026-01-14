@@ -3,16 +3,27 @@
 namespace App\Http\Controllers;
 
 use App\Models\Article;
+use Illuminate\Http\Request;
 
 class ArticleController extends Controller
 {
-    public function index()
+    public function create()
     {
-        $articles = Article::all();
+        return view('articles.create');
+    }
 
-        dd($articles);  // Debug here
+    public function store(Request $request)
+    {
+        $validated = $request->validate([
+            'title' => 'required|min:3',
+            'body' => 'required|min:10',
+            'category_id' => 'required|integer',
+        ]);
 
-        return view('articles.index', compact('articles'));
+        Article::create($validated);
+
+        return redirect()
+            ->route('articles.create')
+            ->with('success', 'Article created successfully!');
     }
 }
-
