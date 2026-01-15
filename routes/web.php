@@ -15,8 +15,14 @@ Route::get('/dashboard', function () {
 Route::get('/articles/create', [ArticleController::class, 'create'])
     ->name('articles.create');
 
+Route::get('/articles', [ArticleController::class, 'index']);
+
 Route::post('/articles', [ArticleController::class, 'store'])
     ->name('articles.store');
+
+Route::get('/articles/edit/{id}', [ArticleController::class, 'edit']);
+Route::put('/articles/update/{id}', [ArticleController::class, 'update']);
+Route::delete('/articles/{id}', [ArticleController::class, 'destroy']);
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -31,7 +37,6 @@ Route::get('/admin', function () {
 Route::get('/test', function () {
     return ' Admin can see this even in maintenance';
 })->middleware('maintenance');
-
 
 
 require __DIR__.'/auth.php';
